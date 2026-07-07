@@ -762,15 +762,16 @@ resetBtn.addEventListener('click', () => {
 // touch support (完整拖曳)
 let touchSrc = null, touchClone = null, touchStartX = 0, touchStartY = 0;
 document.addEventListener('touchstart', e => {
+  // 如果點在 ✕ 按鈕上，不啟動拖曳，讓 click 事件正常運作
+  if (e.target.closest('.remove-x')) return;
   const card = e.target.closest('.card') || e.target.closest('.placed');
   if (!card) return;
   // 只在側欄或已放置的卡上啟動
   if (card.classList.contains('disabled')) return;
-  e.preventDefault();
   touchSrc = card;
   const t = e.touches[0];
   touchStartX = t.clientX; touchStartY = t.clientY;
-  // 建立浮動複本
+  // 建立浮動複本（先不 preventDefault，保留滾動能力）
   touchClone = card.cloneNode(true);
   touchClone.style.position = 'fixed';
   touchClone.style.zIndex = '9999';
@@ -784,9 +785,13 @@ document.addEventListener('touchstart', e => {
 }, {passive: false});
 
 document.addEventListener('touchmove', e => {
-  if (!touchClone) return;
-  e.preventDefault();
+  if (!touchClone || !touchSrc) return;
+  // 距離門檻：移動超過 10px 才鎖定為拖曳模式
   const t = e.touches[0];
+  const dx = Math.abs(t.clientX - touchStartX);
+  const dy = Math.abs(t.clientY - touchStartY);
+  if (dx < 5 && dy < 5) return; // 還沒真的開始拖，允許滾動
+  e.preventDefault();
   touchClone.style.left = (t.clientX - 80) + 'px';
   touchClone.style.top = (t.clientY - 20) + 'px';
   // 高亮底下的格子
@@ -997,8 +1002,25 @@ if (window.__SUPI_PLACEMENTS__) {
 <script>
 // Service Worker 註冊 - PWA 離線支援
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').then(reg => {
+  navigator.serviceWorker.register('sw.js?v=2').then(reg => {
     console.log('✅ Service Worker 已註冊', reg.scope);
+    // 監聽 SW 更新：當新版本啟用時自動重整
+    reg.addEventListener('updatefound', () => {
+      const newWorker = reg.installing;
+      newWorker.addEventListener('statechange', () => {
+        if (newWorker.state === 'activated' && navigator.serviceWorker.controller) {
+          console.log('🔄 新版本已啟用，重整頁面...');
+          window.location.reload();
+        }
+      });
+    });
+    // 監聽來自 SW 的訊息
+    navigator.serviceWorker.addEventListener('message', event => {
+      if (event.data && event.data.type === 'UPDATE') {
+        console.log('📡 收到 SW 更新通知，重整頁面...');
+        window.location.reload();
+      }
+    });
   }).catch(err => {
     console.warn('⚠️ Service Worker 註冊失敗', err);
   });
