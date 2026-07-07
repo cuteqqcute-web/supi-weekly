@@ -1,5 +1,5 @@
 // Service Worker for 酥皮週計畫 - offline support
-const CACHE_NAME = 'supi-weekly-v2';
+const CACHE_NAME = 'supi-weekly-v3';
 
 const ASSETS = [
   '.',
@@ -34,30 +34,26 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// Fetch: cache-first strategy
+// Fetch: network-first strategy (always try fresh, fall back to cache for offline)
 self.addEventListener('fetch', event => {
   // Skip non-GET requests
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      // Return cached response and update cache in background
-      const fetchPromise = fetch(event.request).then(response => {
-        // Don't cache opaque responses or errors
-        if (!response || response.status !== 200 || response.type === 'opaque') {
-          return response;
-        }
-        // Clone and cache
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, clone);
-        });
+    fetch(event.request).then(response => {
+      // Don't cache opaque responses or errors
+      if (!response || response.status !== 200 || response.type === 'opaque') {
         return response;
-      }).catch(() => {
-        // Network failed, will fall through to cached
+      }
+      // Clone and cache for offline
+      const clone = response.clone();
+      caches.open(CACHE_NAME).then(cache => {
+        cache.put(event.request, clone);
       });
-
-      return cached || fetchPromise;
+      return response;
+    }).catch(() => {
+      // Network failed, fall back to cache
+      return caches.match(event.request);
     })
   );
 });
