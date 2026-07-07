@@ -1,5 +1,5 @@
 // Service Worker for 酥皮週計畫 - offline support
-const CACHE_NAME = 'supi-weekly-v1';
+const CACHE_NAME = 'supi-weekly-v2';
 
 const ASSETS = [
   '.',
