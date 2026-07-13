@@ -1,0 +1,14 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>設定</title></head><body>
+<p id="msg">設定中…</p>
+<script>
+const hash = window.location.hash;
+const m = hash.match(/^#t=(.+)/);
+if (m) {
+  sessionStorage.setItem('supi_gh_token', m[1]);
+  document.getElementById('msg').textContent = '✅ 設定完成！跳轉中…';
+  setTimeout(() => { window.location.href = '.'; }, 500);
+} else {
+  document.getElementById('msg').textContent = '❌ 沒有 token';
+}
+</script>
+</body></html>
