@@ -1640,6 +1640,36 @@
         "flex": true,
         "maxDayTokens": 6
       }
+    },
+    {
+      "id": "free",
+      "type": "free",
+      "name": "自由",
+      "icon": "🎯",
+      "day": 1,
+      "slot": 5,
+      "len": 1,
+      "tokens": 1,
+      "meta": {
+        "flex": true,
+        "tokenSize": 1,
+        "tokenMins": 30,
+        "maxDayTokens": 12
+      }
+    },
+    {
+      "id": "care",
+      "type": "care",
+      "name": "安親班",
+      "icon": "🏫",
+      "day": 3,
+      "slot": 4,
+      "len": 7,
+      "tokens": 1,
+      "meta": {
+        "flex": true,
+        "maxDayTokens": 6
+      }
     }
   ],
   "4": [],
