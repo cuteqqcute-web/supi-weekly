@@ -282,7 +282,7 @@ ruby rt { font-size: 0.55em; color: #888; }
   <div class="token-dialog">
     <h3>🔐 設定 GitHub Token</h3>
     <p>需要一個 <strong>fine-grained personal access token</strong>，僅限 <code>cuteqqcute-web/supi-weekly</code> repo 的 <strong>Contents</strong> 讀寫權限。</p>
-    <p>Token 只存在這個瀏覽器的記憶體中（sessionStorage），關閉分頁後自動清除，不會上傳到任何地方。</p>
+    <p>Token 儲存在瀏覽器中，設定一次永久有效。</p>
     <input type="password" id="tokenInput" placeholder="github_pat_11A...">
     <div class="btn-row">
       <button class="btn-clear" id="tokenClearBtn">🗑 清除</button>
@@ -911,10 +911,10 @@ const RAW_URL = `https://raw.githubusercontent.com/${GITHUB_REPO}/main/data.json
 let syncDebounce = null;
 let syncInFlight = false;
 
-// Token 管理（sessionStorage — 關閉分頁自動清除，不留硬碟）
-function getToken() { return sessionStorage.getItem('supi_gh_token'); }
-function setToken(t) { sessionStorage.setItem('supi_gh_token', t); }
-function clearToken() { sessionStorage.removeItem('supi_gh_token'); }
+// Token 管理（localStorage — 設定一次，永久有效）
+function getToken() { return localStorage.getItem('supi_gh_token'); }
+function setToken(t) { localStorage.setItem('supi_gh_token', t); }
+function clearToken() { localStorage.removeItem('supi_gh_token'); }
 function hasToken() { return !!getToken(); }
 
 // Sync status UI
