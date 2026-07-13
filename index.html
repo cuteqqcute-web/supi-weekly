@@ -901,19 +901,206 @@ document.addEventListener('touchend', e => {
   }
 });
 
-// === 自動存檔 ===
+// === GitHub 同步模組 ===
+const GITHUB_REPO = 'cuteqqcute-web/supi-weekly';
+const GITHUB_API = `https://api.github.com/repos/${GITHUB_REPO}/contents/data.json`;
+const RAW_URL = `https://raw.githubusercontent.com/${GITHUB_REPO}/main/data.json`;
+let syncDebounce = null;
+let syncInFlight = false;
+
+// Token 管理（sessionStorage — 關閉分頁自動清除，不留硬碟）
+function getToken() { return sessionStorage.getItem('supi_gh_token'); }
+function setToken(t) { sessionStorage.setItem('supi_gh_token', t); }
+function clearToken() { sessionStorage.removeItem('supi_gh_token'); }
+function hasToken() { return !!getToken(); }
+
+// Sync status UI
+const syncStatusEl = document.getElementById('syncStatus');
+function setSyncStatus(status, html) {
+  syncStatusEl.className = 'sync-status ' + status;
+  syncStatusEl.title = html.replace(/<[^>]*>/g,'');
+  syncStatusEl.innerHTML = html;
+}
+
+// Token dialog
+const tokenOverlay = document.getElementById('tokenOverlay');
+const tokenInput = document.getElementById('tokenInput');
+document.getElementById('syncBtn').addEventListener('click', openTokenDialog);
+syncStatusEl.addEventListener('click', openTokenDialog);
+function openTokenDialog() {
+  tokenInput.value = getToken() || '';
+  tokenOverlay.classList.add('show');
+  setTimeout(() => tokenInput.focus(), 100);
+}
+function closeTokenDialog() { tokenOverlay.classList.remove('show'); }
+
+document.getElementById('tokenSaveBtn').addEventListener('click', () => {
+  const t = tokenInput.value.trim();
+  if (!t) return;
+  setToken(t);
+  closeTokenDialog();
+  setSyncStatus('syncing', '🔄 驗證中…');
+  testGitHubConnection().then(ok => {
+    if (ok) {
+      setSyncStatus('synced', '✅ 已連線');
+      showToast('✅ GitHub 連線成功！');
+      scheduleGitHubSync(); // 立刻同步一次
+    } else {
+      setSyncStatus('error', '❌ 驗證失敗');
+      showToast('❌ Token 驗證失敗，請確認權限（Contents 讀寫）');
+    }
+  });
+});
+document.getElementById('tokenClearBtn').addEventListener('click', () => {
+  clearToken();
+  closeTokenDialog();
+  setSyncStatus('offline', '⚡ 離線');
+  showToast('🗑 Token 已清除，回到單機模式');
+});
+document.getElementById('tokenCancelBtn').addEventListener('click', closeTokenDialog);
+// 點擊遮罩關閉
+tokenOverlay.addEventListener('click', e => { if (e.target === tokenOverlay) closeTokenDialog(); });
+
+// 測 GitHub 連線
+async function testGitHubConnection() {
+  try {
+    const resp = await fetch(GITHUB_API, {
+      headers: { 'Authorization': `Bearer ${getToken()}`, 'Accept': 'application/vnd.github+json' }
+    });
+    return resp.ok || resp.status === 404;
+  } catch(e) { return false; }
+}
+
+// UTF-8 safe base64
+function toBase64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = ''; bytes.forEach(b => bin += String.fromCharCode(b));
+  return btoa(bin);
+}
+
+// 從 GitHub API 讀取 data.json
+async function loadFromGitHub() {
+  if (!hasToken()) return null;
+  try {
+    const resp = await fetch(GITHUB_API + '?t=' + Date.now(), {
+      headers: { 'Authorization': `Bearer ${getToken()}`, 'Accept': 'application/vnd.github+json' }
+    });
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    return JSON.parse(atob(data.content));
+  } catch(e) { return null; }
+}
+
+// 寫入 GitHub（PUT Contents API）
+async function syncToGitHub() {
+  if (!hasToken() || syncInFlight) return;
+  syncInFlight = true;
+  setSyncStatus('syncing', '🔄 同步中…');
+  try {
+    let sha = null;
+    const getResp = await fetch(GITHUB_API + '?t=' + Date.now(), {
+      headers: { 'Authorization': `Bearer ${getToken()}`, 'Accept': 'application/vnd.github+json' }
+    });
+    if (getResp.ok) { const d = await getResp.json(); sha = d.sha; }
+    const body = { message: '📅 更新週計畫', content: toBase64(JSON.stringify(placements, null, 2)) };
+    if (sha) body.sha = sha;
+    const putResp = await fetch(GITHUB_API, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${getToken()}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    if (putResp.ok) {
+      setSyncStatus('synced', '✅ 已同步');
+    } else {
+      const err = await putResp.json().catch(() => ({}));
+      throw new Error(err.message || 'HTTP ' + putResp.status);
+    }
+  } catch(e) {
+    setSyncStatus('error', '❌ 同步失敗');
+    console.warn('GitHub sync:', e.message);
+  } finally { syncInFlight = false; }
+}
+
+function scheduleGitHubSync() {
+  if (!hasToken()) return;
+  if (syncDebounce) clearTimeout(syncDebounce);
+  syncDebounce = setTimeout(() => syncToGitHub(), 2000);
+}
+
+// === 本地存檔（永遠先寫 localStorage 當備援）===
 function saveData() {
-  try { localStorage.setItem('supi_placements', JSON.stringify(placements)); } catch(e) { /* file:// 不支援 localStorage，跳過 */ }
-}
-function loadData() {
-  try { const d = JSON.parse(localStorage.getItem('supi_placements')); if (d && Object.keys(d).length > 0) placements = d; } catch(e) {}
+  try { localStorage.setItem('supi_placements', JSON.stringify(placements)); } catch(e) {}
+  scheduleGitHubSync();
 }
 
-loadData();
+// === 載入資料（GitHub API → raw URL → 內嵌 → localStorage）===
+async function loadData() {
+  // 1. 從 GitHub API 載入（需 token，最新資料）
+  if (hasToken()) {
+    const remote = await loadFromGitHub();
+    if (remote && Object.keys(remote).length > 0) {
+      placements = remote;
+      try { localStorage.setItem('supi_placements', JSON.stringify(remote)); } catch(e) {}
+      setSyncStatus('synced', '✅ 已同步');
+      return;
+    }
+  }
+  // 2. 從 raw.githubusercontent.com 載入（不需 token，可能有 CDN 快取）
+  try {
+    const rawResp = await fetch(RAW_URL + '?v=' + Date.now());
+    if (rawResp.ok) {
+      const raw = await rawResp.json();
+      if (raw && Object.keys(raw).length > 0) {
+        placements = raw;
+        try { localStorage.setItem('supi_placements', JSON.stringify(raw)); } catch(e) {}
+        setSyncStatus('offline', '📡 唯讀模式');
+        showToast('📡 已從 GitHub 載入（唯讀，輸入 Token 即可編輯同步）');
+        return;
+      }
+    }
+  } catch(e) {}
+  // 3. 內嵌資料（離線檔案版）
+  if (window.__SUPI_PLACEMENTS__ && Object.keys(window.__SUPI_PLACEMENTS__).length > 0) {
+    placements = window.__SUPI_PLACEMENTS__;
+    saveData();
+    return;
+  }
+  // 4. localStorage 備援
+  try {
+    const d = JSON.parse(localStorage.getItem('supi_placements'));
+    if (d && Object.keys(d).length > 0) placements = d;
+  } catch(e) {}
+}
 
-// Hook save after every placement change
-const origRenderGrid = renderGrid;
-renderGrid = function() { origRenderGrid(); try { saveData(); } catch(e) {} };
+// === URL fragment 自動設定 token（一次性設定連結） ===
+(function() {
+  const hash = window.location.hash;
+  const m = hash.match(/^#setup=(.+)/);
+  if (m) {
+    const token = decodeURIComponent(m[1]);
+    setToken(token);
+    // 清除 hash，避免留在瀏覽器記錄中
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
+})();
+
+// === 啟動 ===
+(async function init() {
+  if (hasToken()) setSyncStatus('synced', '✅ 已同步');
+
+  await loadData();
+
+  // Hook save after every placement change
+  const origRenderGrid = renderGrid;
+  renderGrid = function() { origRenderGrid(); try { saveData(); } catch(e) {} };
+
+  renderGrid();
+  renderCards();
+})();
 
 // === 匯出匯入 ===
 document.getElementById('exportBtn').addEventListener('click', () => {
@@ -954,15 +1141,6 @@ document.getElementById('importFile').addEventListener('change', (e) => {
   };
   reader.readAsText(file);
 });
-
-// 啟動時檢查是否有內嵌資料
-if (window.__SUPI_PLACEMENTS__) {
-  placements = window.__SUPI_PLACEMENTS__;
-  saveData();
-}
-
-renderGrid();
-renderCards();
 
 // === 輸出列印 ===
 const printBtn = document.getElementById('printBtn');
@@ -1069,7 +1247,7 @@ if (window.__SUPI_PLACEMENTS__) {
 <script>
 // Service Worker 註冊 - PWA 離線支援
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js?v=2').then(reg => {
+  navigator.serviceWorker.register('sw.js?v=3').then(reg => {
     console.log('✅ Service Worker 已註冊', reg.scope);
     // 監聽 SW 更新：當新版本啟用時自動重整
     reg.addEventListener('updatefound', () => {
