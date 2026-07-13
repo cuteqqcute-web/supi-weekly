@@ -1656,20 +1656,6 @@
         "tokenMins": 30,
         "maxDayTokens": 12
       }
-    },
-    {
-      "id": "care",
-      "type": "care",
-      "name": "Ã¥Â®ÂÃ¨Â¦ÂªÃ§ÂÂ­",
-      "icon": "Ã°ÂÂÂ«",
-      "day": 3,
-      "slot": 4,
-      "len": 7,
-      "tokens": 1,
-      "meta": {
-        "flex": true,
-        "maxDayTokens": 6
-      }
     }
   ],
   "4": [],
