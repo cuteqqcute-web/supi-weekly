@@ -243,10 +243,13 @@ ruby rt { font-size: 0.55em; color: #888; }
   <select id="weekSelect"></select>
   <button id="nextWeek" style="font-size:18px;padding:4px 10px;">▶</button>
   <button id="resetBtn">🔄 重新安排這週</button>
-  <button id="printBtn" style="background:#4caf50;">🖨️ 輸出列印</button>
-  <button id="exportBtn" style="background:#2196f3;">📤 匯出備份</button>
-  <button id="exportFullBtn" style="background:#9c27b0;">📦 離線檔案版</button>
-  <button id="importBtn" style="background:#ff9800;">📥 匯入</button>
+  <button id="toolsToggle" style="background:#888;font-size:12px;">⚙️ 工具</button>
+  <span id="toolsPanel" style="display:none;">
+    <button id="printBtn" style="background:#4caf50;font-size:12px;">🖨️ 列印</button>
+    <button id="exportBtn" style="background:#2196f3;font-size:12px;">📤 匯出</button>
+    <button id="exportFullBtn" style="background:#9c27b0;font-size:12px;">📦 離線版</button>
+    <button id="importBtn" style="background:#ff9800;font-size:12px;">📥 匯入</button>
+  </span>
   <input type="file" id="importFile" accept=".json,.txt" style="display:none">
   <span style="flex:1"></span>
   <button id="syncBtn" style="background:#333;font-size:14px;">🔗 GitHub 同步</button>
