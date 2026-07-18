@@ -1881,39 +1881,6 @@
       }
     },
     {
-      "id": "tech",
-      "type": "tech",
-      "name": "3C",
-      "icon": "📱",
-      "day": 3,
-      "slot": 16,
-      "len": 2,
-      "tokens": 2,
-      "meta": {
-        "flex": true,
-        "tokenSize": 1,
-        "tokenMins": 30,
-        "maxDropTokens": 2,
-        "maxDayTokens": 4
-      }
-    },
-    {
-      "id": "free",
-      "type": "free",
-      "name": "自由",
-      "icon": "🎯",
-      "day": 3,
-      "slot": 18,
-      "len": 2,
-      "tokens": 2,
-      "meta": {
-        "flex": true,
-        "tokenSize": 1,
-        "tokenMins": 30,
-        "maxDayTokens": 12
-      }
-    },
-    {
       "id": "free",
       "type": "free",
       "name": "自由",
