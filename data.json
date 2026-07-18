@@ -2269,6 +2269,19 @@
         "tokenMins": 30,
         "maxDayTokens": 4
       }
+    },
+    {
+      "id": "swim-b",
+      "type": "swim",
+      "name": "游泳 B",
+      "icon": "🏊",
+      "day": 0,
+      "slot": 17,
+      "len": 4,
+      "tokens": 1,
+      "meta": {
+        "slot": "b"
+      }
     }
   ]
 }
