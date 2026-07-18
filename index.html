@@ -1100,8 +1100,8 @@ async function loadData() {
   renderCards();
 })();
 
-// === 匯出匯入 ===
-document.getElementById('exportBtn').addEventListener('click', () => {
+// === 匯出匯入（安全綁定：元素不存在就跳過） ===
+{ const btn = document.getElementById('exportBtn'); if (btn) btn.addEventListener('click', () => {
   const json = JSON.stringify(placements, null, 2);
   const blob = new Blob([json], {type:'text/plain'});
   const a = document.createElement('a');
@@ -1109,8 +1109,8 @@ document.getElementById('exportBtn').addEventListener('click', () => {
   a.download = 'supi_backup.txt';
   a.click();
   showToast('📤 已匯出備份檔 (.txt，LINE可傳)');
-});
-document.getElementById('exportFullBtn').addEventListener('click', () => {
+}); }
+{ const btn = document.getElementById('exportFullBtn'); if (btn) btn.addEventListener('click', () => {
   const endScript = '<' + '/script>';
   const inject = '<script>window.__SUPI_PLACEMENTS__ = ' + JSON.stringify(placements) + ';' + endScript;
   const full = document.documentElement.outerHTML.replace('</body>', inject + '\n</body>');
@@ -1120,13 +1120,13 @@ document.getElementById('exportFullBtn').addEventListener('click', () => {
   a.download = 'supi_weekly.html';
   a.click();
   showToast('📦 已匯出完整版（含行程，可直接用）');
-});
-document.getElementById('importBtn').addEventListener('click', () => {
+}); }
+{ const btn = document.getElementById('importBtn'); if (btn) btn.addEventListener('click', () => {
   document.getElementById('importFile').click();
-});
-document.getElementById('importFile').addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+}); }
+{ const file = document.getElementById('importFile'); if (file) file.addEventListener('change', (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
   const reader = new FileReader();
   reader.onload = (ev) => {
     try {
@@ -1137,8 +1137,8 @@ document.getElementById('importFile').addEventListener('change', (e) => {
       showToast('📥 已匯入行程');
     } catch(ex) { showToast('⛔ 檔案格式錯誤'); }
   };
-  reader.readAsText(file);
-});
+  reader.readAsText(f);
+}); }
 
 // === 輸出列印 ===
 const printBtn = document.getElementById('printBtn');
