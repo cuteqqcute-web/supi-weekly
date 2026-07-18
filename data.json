@@ -2008,19 +2008,20 @@
       }
     },
     {
-      "id": "free",
-      "type": "free",
-      "name": "自由",
-      "icon": "🎯",
+      "id": "tech",
+      "type": "tech",
+      "name": "3C",
+      "icon": "📱",
       "day": 4,
       "slot": 22,
-      "len": 2,
-      "tokens": 2,
+      "len": 1,
+      "tokens": 1,
       "meta": {
         "flex": true,
         "tokenSize": 1,
         "tokenMins": 30,
-        "maxDayTokens": 12
+        "maxDropTokens": 2,
+        "maxDayTokens": 4
       }
     }
   ],
