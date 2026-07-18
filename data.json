@@ -1803,6 +1803,34 @@
         "flex": true,
         "maxDayTokens": 6
       }
+    },
+    {
+      "id": "care",
+      "type": "care",
+      "name": "安親班",
+      "icon": "🏫",
+      "day": 2,
+      "slot": 2,
+      "len": 9,
+      "tokens": 1,
+      "meta": {
+        "flex": true,
+        "maxDayTokens": 6
+      }
+    },
+    {
+      "id": "care",
+      "type": "care",
+      "name": "安親班",
+      "icon": "🏫",
+      "day": 2,
+      "slot": 12,
+      "len": 3,
+      "tokens": 1,
+      "meta": {
+        "flex": true,
+        "maxDayTokens": 6
+      }
     }
   ],
   "5": []
