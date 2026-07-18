@@ -1733,6 +1733,34 @@
       "meta": {
         "slot": "a"
       }
+    },
+    {
+      "id": "skate",
+      "type": "skate",
+      "name": "直排輪",
+      "icon": "🛼",
+      "day": 3,
+      "slot": 20,
+      "len": 1,
+      "tokens": 1,
+      "meta": {
+        "day": 3,
+        "start": "16:30"
+      }
+    },
+    {
+      "id": "skate",
+      "type": "skate",
+      "name": "直排輪",
+      "icon": "🛼",
+      "day": 3,
+      "slot": 22,
+      "len": 1,
+      "tokens": 1,
+      "meta": {
+        "day": 3,
+        "start": "16:30"
+      }
     }
   ],
   "5": []
