@@ -1659,6 +1659,22 @@
         "tokenMins": 30,
         "maxDayTokens": 4
       }
+    },
+    {
+      "id": "free",
+      "type": "free",
+      "name": "自由",
+      "icon": "🎯",
+      "day": 2,
+      "slot": 25,
+      "len": 1,
+      "tokens": 1,
+      "meta": {
+        "flex": true,
+        "tokenSize": 1,
+        "tokenMins": 30,
+        "maxDayTokens": 12
+      }
     }
   ],
   "5": []
