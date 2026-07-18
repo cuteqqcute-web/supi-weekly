@@ -1675,6 +1675,22 @@
         "tokenMins": 30,
         "maxDayTokens": 12
       }
+    },
+    {
+      "id": "math",
+      "type": "math",
+      "name": "數學",
+      "icon": "🧮",
+      "day": 5,
+      "slot": 8,
+      "len": 2,
+      "tokens": 2,
+      "meta": {
+        "flex": true,
+        "tokenSize": 1,
+        "tokenMins": 30,
+        "maxDayTokens": 4
+      }
     }
   ],
   "5": []
