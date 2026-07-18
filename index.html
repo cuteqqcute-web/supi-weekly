@@ -1218,7 +1218,9 @@ printBtn.addEventListener('click', () => {
     html += '</tr>';
   }
   html += '</tbody></table><p style="text-align:center;font-size:10px;color:#999">Ctrl+P 列印 | 另存 PDF | 另存 HTML</p></body></html>';
-  const blob = new Blob([html], {type: 'text/html;charset=UTF-8'});
+  const encoder = new TextEncoder();
+  const bytes = encoder.encode(html);
+  const blob = new Blob([bytes], {type: 'text/html'});
   w.location.href = URL.createObjectURL(blob);
 });
 </script>
