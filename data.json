@@ -2295,6 +2295,19 @@
       "meta": {
         "slot": "a"
       }
+    },
+    {
+      "id": "swim-a",
+      "type": "swim",
+      "name": "游泳 A",
+      "icon": "🏊",
+      "day": 3,
+      "slot": 3,
+      "len": 4,
+      "tokens": 1,
+      "meta": {
+        "slot": "a"
+      }
     }
   ]
 }
