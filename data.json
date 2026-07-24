@@ -2288,19 +2288,6 @@
       "type": "swim",
       "name": "æ¸¸æ³³ A",
       "icon": "ð",
-      "day": 2,
-      "slot": 3,
-      "len": 4,
-      "tokens": 1,
-      "meta": {
-        "slot": "a"
-      }
-    },
-    {
-      "id": "swim-a",
-      "type": "swim",
-      "name": "æ¸¸æ³³ A",
-      "icon": "ð",
       "day": 3,
       "slot": 3,
       "len": 4,
