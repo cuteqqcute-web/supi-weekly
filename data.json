@@ -2271,19 +2271,6 @@
       }
     },
     {
-      "id": "swim-b",
-      "type": "swim",
-      "name": "æ¸¸æ³³ B",
-      "icon": "ð",
-      "day": 0,
-      "slot": 17,
-      "len": 4,
-      "tokens": 1,
-      "meta": {
-        "slot": "b"
-      }
-    },
-    {
       "id": "swim-a",
       "type": "swim",
       "name": "æ¸¸æ³³ A",
@@ -2319,6 +2306,19 @@
       "len": 4,
       "tokens": 1,
       "meta": {}
+    },
+    {
+      "id": "swim-b",
+      "type": "swim",
+      "name": "游泳 B",
+      "icon": "🏊",
+      "day": 5,
+      "slot": 17,
+      "len": 4,
+      "tokens": 1,
+      "meta": {
+        "slot": "b"
+      }
     }
   ]
 }
