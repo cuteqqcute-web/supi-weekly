@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="酥皮週計畫">
 <link rel="apple-touch-icon" href="icon-192.svg">
 <link rel="manifest" href="manifest.json">
-<title>酥皮週計畫 2026 年 7 月</title>
+<title>酥皮週計畫 2026 暑假</title>
 <style>
 :root {
   --bg: #fff8f0;
@@ -237,7 +237,7 @@ ruby rt { font-size: 0.55em; color: #888; }
 <body>
 <noscript><div style="background:#ff6b6b;color:#fff;padding:20px;text-align:center;font-size:20px">⚠️ 請「下載」後用 Chrome 開啟，勿用 Drive 預覽</div></noscript>
 <header>
-  <h1>🏖️ 酥皮的 2026 年 7 月週計畫</h1>
+  <h1>🏖️ 酥皮的 2026 年暑假週計畫</h1>
   <label for="weekSelect">選擇週次：</label>
   <button id="prevWeek" style="font-size:18px;padding:4px 10px;">◀</button>
   <select id="weekSelect"></select>
@@ -315,7 +315,12 @@ const WEEKS = [
   { n:2, label:'第2週 7/6-7/12', start:'2026-07-06', hasRun:false },
   { n:3, label:'第3週 7/13-7/19', start:'2026-07-13', hasRun:false },
   { n:4, label:'第4週 7/20-7/26', start:'2026-07-20', hasRun:false },
-  { n:5, label:'第5週 7/27-7/31', start:'2026-07-27', hasRun:true },
+  { n:5, label:'第5週 7/27-8/2', start:'2026-07-27', hasRun:true },
+  { n:6, label:'第6週 8/3-8/9', start:'2026-08-03', hasRun:true },
+  { n:7, label:'第7週 8/10-8/16', start:'2026-08-10', hasRun:true },
+  { n:8, label:'第8週 8/17-8/23', start:'2026-08-17', hasRun:true },
+  { n:9, label:'第9週 8/24-8/30', start:'2026-08-24', hasRun:true },
+  { n:10, label:'第10週 8/31-9/6', start:'2026-08-31', hasRun:true }
 ];
 
 let currentWeek = WEEKS[0];
