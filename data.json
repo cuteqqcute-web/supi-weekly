@@ -2223,22 +2223,6 @@
   ],
   "5": [
     {
-      "id": "eng",
-      "type": "eng",
-      "name": "è±æ",
-      "icon": "ð¤",
-      "day": 5,
-      "slot": 26,
-      "len": 2,
-      "tokens": 2,
-      "meta": {
-        "flex": true,
-        "tokenSize": 1,
-        "tokenMins": 30,
-        "maxDayTokens": 4
-      }
-    },
-    {
       "id": "swim-a",
       "type": "swim",
       "name": "游泳 A",
