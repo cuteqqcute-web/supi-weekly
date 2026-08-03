@@ -2439,6 +2439,20 @@
       "len": 4,
       "tokens": 1,
       "meta": {}
+    },
+    {
+      "id": "care",
+      "type": "care",
+      "name": "安親班",
+      "icon": "🏫",
+      "day": 0,
+      "slot": 3,
+      "len": 8,
+      "tokens": 1,
+      "meta": {
+        "flex": true,
+        "maxDayTokens": 6
+      }
     }
   ]
 }
