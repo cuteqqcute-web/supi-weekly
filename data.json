@@ -2469,6 +2469,23 @@
         "tokenMins": 30,
         "maxDayTokens": 12
       }
+    },
+    {
+      "id": "tech",
+      "type": "tech",
+      "name": "3C",
+      "icon": "📱",
+      "day": 0,
+      "slot": 20,
+      "len": 1,
+      "tokens": 1,
+      "meta": {
+        "flex": true,
+        "tokenSize": 1,
+        "tokenMins": 30,
+        "maxDropTokens": 2,
+        "maxDayTokens": 4
+      }
     }
   ]
 }
