@@ -2500,6 +2500,39 @@
         "flex": true,
         "maxDayTokens": 6
       }
+    },
+    {
+      "id": "tech",
+      "type": "tech",
+      "name": "3C",
+      "icon": "📱",
+      "day": 0,
+      "slot": 28,
+      "len": 1,
+      "tokens": 1,
+      "meta": {
+        "flex": true,
+        "tokenSize": 1,
+        "tokenMins": 30,
+        "maxDropTokens": 2,
+        "maxDayTokens": 4
+      }
+    },
+    {
+      "id": "free",
+      "type": "free",
+      "name": "自由",
+      "icon": "🎯",
+      "day": 0,
+      "slot": 27,
+      "len": 1,
+      "tokens": 1,
+      "meta": {
+        "flex": true,
+        "tokenSize": 1,
+        "tokenMins": 30,
+        "maxDayTokens": 12
+      }
     }
   ]
 }
