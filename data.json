@@ -2586,6 +2586,20 @@
         "day": 3,
         "start": "16:30"
       }
+    },
+    {
+      "id": "care",
+      "type": "care",
+      "name": "安親班",
+      "icon": "🏫",
+      "day": 3,
+      "slot": 12,
+      "len": 6,
+      "tokens": 1,
+      "meta": {
+        "flex": true,
+        "maxDayTokens": 6
+      }
     }
   ]
 }
