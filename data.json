@@ -2417,6 +2417,17 @@
       "meta": {
         "slot": "c"
       }
+    },
+    {
+      "id": "run",
+      "type": "run",
+      "name": "田徑",
+      "icon": "🏃",
+      "day": 1,
+      "slot": 4,
+      "len": 4,
+      "tokens": 1,
+      "meta": {}
     }
   ]
 }
