@@ -2516,6 +2516,20 @@
         "tokenMins": 30,
         "maxDayTokens": 12
       }
+    },
+    {
+      "id": "care",
+      "type": "care",
+      "name": "安親班",
+      "icon": "🏫",
+      "day": 1,
+      "slot": 8,
+      "len": 3,
+      "tokens": 1,
+      "meta": {
+        "flex": true,
+        "maxDayTokens": 6
+      }
     }
   ]
 }
