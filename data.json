@@ -2428,6 +2428,17 @@
       "len": 4,
       "tokens": 1,
       "meta": {}
+    },
+    {
+      "id": "run",
+      "type": "run",
+      "name": "田徑",
+      "icon": "🏃",
+      "day": 3,
+      "slot": 4,
+      "len": 4,
+      "tokens": 1,
+      "meta": {}
     }
   ]
 }
