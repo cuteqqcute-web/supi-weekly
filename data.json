@@ -2560,20 +2560,6 @@
       }
     },
     {
-      "id": "care",
-      "type": "care",
-      "name": "安親班",
-      "icon": "🏫",
-      "day": 3,
-      "slot": 12,
-      "len": 5,
-      "tokens": 1,
-      "meta": {
-        "flex": true,
-        "maxDayTokens": 6
-      }
-    },
-    {
       "id": "skate",
       "type": "skate",
       "name": "直排輪",
