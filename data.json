@@ -2486,6 +2486,20 @@
         "maxDropTokens": 2,
         "maxDayTokens": 4
       }
+    },
+    {
+      "id": "care",
+      "type": "care",
+      "name": "安親班",
+      "icon": "🏫",
+      "day": 0,
+      "slot": 12,
+      "len": 8,
+      "tokens": 1,
+      "meta": {
+        "flex": true,
+        "maxDayTokens": 6
+      }
     }
   ]
 }
